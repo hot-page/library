@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "start": "node dev-server.js"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.27.9"
+  }
+}
