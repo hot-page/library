@@ -1,8 +1,22 @@
 const styleSheet = new CSSStyleSheet()
 styleSheet.replaceSync(`
-  #containser {
+  #container {
     display: grid;
     grid-template-rows: auto auto;
+    --purple-100: #f6f1f9;
+    --purple-300: #e3d4ed;
+    --purple-500: #caaddc;
+    --purple-700: #aa7bc7;
+    --purple-900: #5f347a;
+    --primary-color-100: var(--purple-100);
+    --primary-color-300: var(--purple-300);
+    --primary-color-500: var(--purple-500);
+    --primary-color-700: var(--purple-700);
+    --primary-color-900: var(--purple-900);
+    --icon-color-300: var(--primary-color-300);
+    --icon-color-500: var(--primary-color-500);
+    --icon-color-700: var(--primary-color-700);
+    --icon-color-900: var(--primary-color-900);
   }
 
   #icon {
@@ -10,6 +24,7 @@ styleSheet.replaceSync(`
     justify-self: end;
     cursor: grab;
   }
+
 `)
 
 class HotPageSnippet extends HTMLElement {
@@ -64,6 +79,7 @@ class HotPageSnippet extends HTMLElement {
 
   #handlePointerDown = (event) => {
     if (event.which !== 1) return
+    if (!this.getAttribute('hot-dom-elements')) return
     event.preventDefault()
     this.setPointerCapture(event.pointerId)
     this.addEventListener('pointermove', this.#handlePointerMove)
