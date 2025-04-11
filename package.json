@@ -1,9 +1,14 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node dev-server.js"
+    "start": "vite --host",
+    "build": "vite build",
+    "deploy": "aws s3 cp ./dist/library.js s3://hot-page/ --cache-control=\"max-age=0\" --acl public-read"
   },
-  "devDependencies": {
-    "browser-sync": "^2.27.9"
+  "dependencies": {
+    "prismjs": "^1.30.0",
+    "shiki": "^3.2.1",
+    "vite": "^6.2.5",
+    "vite-plugin-checker": "^0.9.1"
   }
 }
