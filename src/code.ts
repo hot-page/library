@@ -1,30 +1,21 @@
-import { createHighlighterCore } from 'shiki/core'
-import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
-import theme from 'shiki/themes/slack-ochin.mjs'
-import js from 'shiki/langs/javascript.mjs'
-import css from 'shiki/langs/css.mjs'
-import html from 'shiki/langs/html.mjs'
+import prism from 'prismjs'
+import css from 'prismjs/themes/prism.min.css?inline'
+
+const prismStyles = new CSSStyleSheet()
+prismStyles.replace(css)
 
 const styleSheet = new CSSStyleSheet()
-styleSheet.replaceSync(`
-  pre {
-    margin: 0;
-    white-space: pre-wrap;
-  }
-
+styleSheet.replace(`
   code {
     display: block;
+    padding: 8px;
     font-family: var(--code-font);
-    padding: 16px;
-    background-color: var(--primary-color-100);
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 
-  /* indents wrapped lines */
-  code .line {
-    display: inline-block;
-    min-height: 1.2em;
-    text-indent: -1.5em;
-    padding-left: 1.5em;
+  .token {
+    background: none !important;
   }
 `)
 
@@ -35,34 +26,17 @@ class HotPageCode extends HTMLElement {
 
   async connectedCallback() {
     this.attachShadow({ mode: 'open' })
-    const shiki = await createHighlighterCore({
-      themes: [theme],
-      langs: [js, css, html],
-      engine: createJavaScriptRegexEngine(),
-    })
-    this.shadowRoot!.adoptedStyleSheets = [styleSheet]
-    const lang =
+    this.shadowRoot!.adoptedStyleSheets = [prismStyles, styleSheet]
+    const language =
       ['html','css', 'javascript'].includes(this.getAttribute('language'))
         ? this.getAttribute('language')
         : 'html'
-    let input = this.textContent
-    // This sucks but there's a big issue where it will only color properties
-    // that are inside a block
-    if (lang == 'css') input = `.foo {\n${input}\n}`
-    const output = shiki
-      .codeToHtml(
-        input,
-        { lang, theme: 'slack-ochin' }
-      )
-    console.log(output)
-    this.shadowRoot!.innerHTML = output
-    // Remove what we added to the source above
-    if (lang == 'css') {
-      const code = this.shadowRoot!.querySelector('code')!
-      code.childNodes[1].remove() // the newline text node
-      code.childNodes[0].remove()
-      code.childNodes[code.childNodes.length - 1].remove()
-    }
+    const code = prism.highlight(
+      this.textContent,
+      prism.languages[language],
+      language,
+    )
+    this.shadowRoot!.innerHTML = `<code>${code}</code>`
   }
 }
 

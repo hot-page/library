@@ -3,7 +3,7 @@
   "scripts": {
     "start": "vite --host",
     "build": "vite build",
-    "deploy": "aws s3 cp ./dist/library.js s3://hot-page/ --cache-control=\"max-age=0\" --acl public-read"
+    "deploy": "npm run build && aws s3 cp ./dist/library.js s3://hot-page/ --cache-control=\"max-age=0\" --acl public-read && aws s3 cp ./dist/library.js.map s3://hot-page/ --cache-control=\"max-age=0\" --acl public-read"
   },
   "dependencies": {
     "prismjs": "^1.30.0",

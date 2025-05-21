@@ -30,24 +30,36 @@ styleSheet.replaceSync(`
 
   @supports (anchor-name: --info) {
     #info {
-      cursor: help;
       anchor-name: --info;
     }
 
     #info-popup {
       display: none; 
       opacity: 0;
-      width: 450px;
-      max-width: 90vw;
       border: 1px solid var(--primary-color-900);
+      background-color: var(--primary-color-100);
       position: fixed;
       position-anchor: --info;
-      position-area: bottom center;
-      position-try-fallbacks: flip-block, flip-inline;
+      top: calc(anchor(bottom) + 8px);
+      left: 16px;
+      right: 16px;
       z-index: 1;
       transition:
         opacity 300ms ease-out,
         display 300ms allow-discrete;
+    }
+
+    #info-arrow {
+      border-top: 1px solid var(--primary-color-900);
+      border-left: 1px solid var(--primary-color-900);
+      background-color: var(--primary-color-100);
+      position: fixed;
+      position-anchor: --info;
+      top: calc(anchor(bottom) + 2px);
+      left: calc(anchor(center) - 6px);
+      width: 12px;
+      height: 12px;
+      transform: rotate(45deg);
     }
 
     #info:hover + #info-popup {
@@ -165,9 +177,10 @@ class HotPageSnippet extends HTMLElement {
             : ''
           }
           <div id="info-popup">
+            <div id="info-arrow"></div>
             <slot name="info"></slot>
           </div>
-          <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg part="icon" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               stroke="var(--icon-color-900)"
               strokeLinecap="round"
