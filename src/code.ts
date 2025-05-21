@@ -8,8 +8,7 @@ const styleSheet = new CSSStyleSheet()
 styleSheet.replace(`
   code {
     display: block;
-    padding: 8px;
-    font-family: var(--code-font);
+    font-family: inherit;
     white-space: pre-wrap;
     word-break: break-all;
   }
